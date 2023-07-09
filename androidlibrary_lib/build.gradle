@@ -2,19 +2,26 @@
  GRADLE CONFIG
  *************************************************************************************************/
 
+plugins {
+    id 'com.android.library'
+    id 'com.jfrog.artifactory'
+    id 'maven-publish'
+    id 'com.palantir.git-version' version '3.0.0'
+}
+
+
 if ((new File(gradle.local)).exists()) {
     apply from: gradle.local
 } else {
     apply from: gradle.remote
 }
 
+
 libraryScripts.each {
     apply from: it
 }
 
-apply plugin: 'com.android.library'
-apply plugin: "com.jfrog.artifactory"
-apply plugin: "maven-publish"
+def projectDetails = versionDetails() //Gets the project details using the 'git-version' plugin
 
 group = groupId
 
@@ -125,6 +132,16 @@ publishing {
         aarDebug(MavenPublication) {}
     }
     repositories {
+        maven{
+            name = "GithubPackages"
+            url = "https://maven.pkg.github.com/odk-x/androidlibrary" //This should be replaced with odk-x/androidlibrary. Should be hardcoded or use gitversion?
+
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+
         ivy {
             ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
             artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
