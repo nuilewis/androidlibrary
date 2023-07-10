@@ -17,6 +17,9 @@ jobs:
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
+      - run:
+          name: Update Package list
+          command: sudo apt-get update
       - android/change-java-version:
           java-version: 11
       - android/create-avd:
