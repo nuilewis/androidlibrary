@@ -21,7 +21,7 @@ jobs:
           name: Update Package list
           command: sudo apt-get update
       - android/change-java-version:
-          java-version: 11
+          java-version: 8
       - android/create-avd:
           avd-name: customavd
           install: true
