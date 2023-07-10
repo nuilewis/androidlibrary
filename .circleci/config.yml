@@ -121,7 +121,9 @@ workflows:
   build-test-deploy-trigger-workflow:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
       - deploy:
           requires:
             - build
