@@ -119,14 +119,14 @@ workflows:
   build-test-deploy-trigger-workflow:
     jobs:
       - test
-      - build
-      - deploy:
-          requires:
-            - test
-            - build
-      - trigger-children:
-          requires:
-            - deploy
+      # - build
+      # - deploy:
+      #     requires:
+      #       - test
+      #       - build
+      # - trigger-children:
+      #     requires:
+      #       - deploy
 
 
 
