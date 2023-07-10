@@ -18,7 +18,7 @@ jobs:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
       - android/change-java-version:
-          java-version: 8
+          java-version: 11
       - android/create-avd:
           avd-name: customavd
           install: true
@@ -90,7 +90,6 @@ jobs:
       - run:
           name: Trigger Tables pipeline
           command: |
-            
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/tables/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
@@ -98,7 +97,6 @@ jobs:
       - run:
           name: Trigger Services pipeline
           command: |
-            
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/services/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
@@ -107,7 +105,6 @@ jobs:
       - run:
           name: Trigger Survey pipelines
           command: |
-            
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/survey/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
