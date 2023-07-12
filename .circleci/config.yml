@@ -39,9 +39,10 @@ jobs:
           cache-prefix: v2
 
   build:
-    docker:
-      - image: cimg/android:2023.06
-
+    executor:
+      name: android/android-docker
+      resource-class: large
+      tag: 2023.04.1
     steps:
       - checkout
       - android/restore-gradle-cache:
