@@ -14,14 +14,15 @@ jobs:
 
     steps:
       - checkout
+      - android/change-java-version:
+          java-version: 8
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
       - run:
           name: Update Package list
           command: sudo apt-get update
-      - android/change-java-version:
-          java-version: 8
+
       - android/create-avd:
           avd-name: customavd
           install: true
