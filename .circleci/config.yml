@@ -52,7 +52,9 @@ jobs:
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
-          
+      - run:
+          name: Echo Java home
+          command: echo $JAVA_HOME  
       - run:
           name: Download Dependencies
           command: ./gradlew clean
