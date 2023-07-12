@@ -52,6 +52,10 @@ jobs:
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
+          
+      - run:
+          name: Download Dependencies
+          command: ./gradlew clean
 
       - run:
           name: Download Dependencies
