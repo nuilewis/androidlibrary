@@ -29,13 +29,13 @@ jobs:
       - android/start-emulator:
           avd-name: customavd
           no-window: true
-          restore-gradle-cache-prefix: v1a
+          restore-gradle-cache-prefix: v2
       - android/run-tests:
           test-command: ./gradlew test
       - android/run-tests:
           test-command: ./gradlew connectedAndroidTest
       - android/save-gradle-cache:
-          cache-prefix: v1a
+          cache-prefix: v2
 
   build:
     docker:
@@ -43,7 +43,8 @@ jobs:
 
     steps:
       - checkout
-      - android/restore-gradle-cache
+      - android/restore-gradle-cache:
+          cache-prefix: v2
       - android/change-java-version:
           java-version: 8
 
