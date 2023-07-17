@@ -49,11 +49,6 @@ jobs:
       - android/change-java-version:
           java-version: 8
       - run:
-          name: export JAVA_HOME
-          command: |
-                  echo $JAVA_HOME
-                  sudo export PATH=$JAVA_HOME/bin:$PATH
-      - run:
           name: change JAVA version manually
           command: |
                   sudo apt install openjdk-8-jdk
