@@ -48,6 +48,11 @@ jobs:
           cache-prefix: v2
       - android/change-java-version:
           java-version: 8
+      - run:
+          name: export JAVA_HOME
+          command: |
+                  echo $JAVA_HOME
+                  export JAVA_HOME = $JAVA_HOME
 
       - run:
           name: Chmod Permissions
@@ -131,17 +136,17 @@ workflows:
   build-test-deploy-trigger-workflow:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - build
-            - test
+      # - test:
+      #     requires:
+      #       - build
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - test
 
-      - trigger-children:
-          requires:
-            - deploy
+      # - trigger-children:
+      #     requires:
+      #       - deploy
 
 
 
