@@ -52,8 +52,14 @@ jobs:
           name: export JAVA_HOME
           command: |
                   echo $JAVA_HOME
-                  export JAVA_HOME = $JAVA_HOME
-
+                  sudo export PATH=$JAVA_HOME/bin:$PATH
+      - run:
+          name: change JAVA version manually
+          command: |
+                  sudo apt install openjdk-8-jdk
+                  export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+                  sudo export PATH=$JAVA_HOME/bin:$PATH
+                  echo $JAVA_HOME
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
