@@ -46,14 +46,14 @@ jobs:
       - checkout
       - android/restore-gradle-cache:
           cache-prefix: v3
-      - android/change-java-version:
-          java-version: 8
-      # - run:
-      #     name: change to JAVA 8 manually
-      #     command: |
-      #             sudo apt install openjdk-8-jdk
-      #             export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-      #             echo $JAVA_HOME
+      # - android/change-java-version:
+      #     java-version: 8
+      - run:
+          name: change to JAVA 8 manually
+          command: |
+                  sudo apt install openjdk-8-jdk
+                  export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+                  echo $JAVA_HOME
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
