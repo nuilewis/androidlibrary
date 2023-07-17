@@ -62,9 +62,6 @@ jobs:
           command: echo $JAVA_HOME  
           environment:
             JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-      - run:
-          name: Download Dependencies
-          command: ./gradlew clean
 
       - run:
           name: Download Dependencies
