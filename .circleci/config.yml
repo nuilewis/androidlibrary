@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - android/restore-gradle-cache:
-          cache-prefix: v2
+          cache-prefix: v3
       - android/change-java-version:
           java-version: 8
       # - run:
