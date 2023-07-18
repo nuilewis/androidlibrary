@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Download Dependencies
           command: |
-            java --version
+            java -version
             ./gradlew androidDependencies --stacktrace
       - run:
           name: Build Library
