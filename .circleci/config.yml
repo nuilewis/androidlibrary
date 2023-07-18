@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Update JAVA_HOME and Echo Java home
           command: |
-            export JAVA_HOME=/path/to/new/java
+            export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
             echo $JAVA_HOME  
 
       - run:
