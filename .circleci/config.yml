@@ -41,8 +41,8 @@ jobs:
       - image: cimg/android:2023.06
     steps:
       - checkout
-      # - android/change-java-version:
-      #     java-version: 8
+      - android/change-java-version:
+          java-version: 8
           # - run:
           #     name: Install OpenJDK 8
           #     command: |
@@ -57,7 +57,7 @@ jobs:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
       - run:
-          name: Update JAVA_HOME and Echo Java home
+          name: Echo Java home
           command: |
             echo $JAVA_HOME  
 
