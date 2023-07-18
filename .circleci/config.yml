@@ -46,8 +46,6 @@ jobs:
       - run:
           name: Clear Gradle cache
           command: rm -rf ~/.gradle
-      - android/restore-gradle-cache:
-          cache-prefix: v3
       - android/change-java-version:
           java-version: 8
       # - run:
@@ -74,9 +72,6 @@ jobs:
           command: |
             java -version
             ./gradlew androidDependencies --stacktrace
-
-      - android/save-gradle-cache
-
       - run:
           name: Build Library
           command: ./gradlew assemble
