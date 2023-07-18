@@ -49,19 +49,19 @@ jobs:
       # - android/change-java-version:
       #     java-version: 8
       - run:
-          name: change to JAVA 8 manually
+          name: Install OpenJDK 17
           command: |
-                  sudo apt install openjdk-8-jdk
-                  export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-                  echo $JAVA_HOME
+            sudo apt-get update && sudo apt-get install openjdk-8-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+            java -version
+
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
       - run:
           name: Echo Java home
           command: echo $JAVA_HOME  
-          # environment:
-          #   JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
 
       - run:
           name: Download Dependencies
