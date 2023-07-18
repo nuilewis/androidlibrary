@@ -43,6 +43,9 @@ jobs:
       - image: cimg/android:2023.06
     steps:
       - checkout
+      - run:
+          name: Clear Gradle cache
+          command: rm -rf ~/.gradle
       - android/restore-gradle-cache:
           cache-prefix: v3
       - android/change-java-version:
