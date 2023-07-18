@@ -139,7 +139,7 @@ workflows:
   build-test-deploy-trigger-workflow:
     jobs:
       #- build
-      - delpoy
+      - deploy
       # - test:
       #     requires:
       #       - build
