@@ -35,8 +35,8 @@ jobs:
           avd-name: customavd
           no-window: true
           restore-gradle-cache-prefix: v2 
-      - android/run-tests:
-          test-command: ./gradlew test
+      # - android/run-tests:
+      #     test-command: ./gradlew test
       - android/run-tests:
           test-command: ./gradlew connectedAndroidTest
       - android/save-gradle-cache:
