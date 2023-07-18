@@ -13,22 +13,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Chmod Permissions
-          command: sudo chmod +x gradlew
-      - run:
-          name: Update Package list
-          command: sudo apt-get update
-
-      - android/create-avd:
-          avd-name: customavd
-          install: true
-          system-image: system-images;android-29;default;x86
-      - android/start-emulator:
-          avd-name: customavd
-          no-window: true
-          restore-gradle-cache-prefix: v2
-
-      - run:
           name: Install OpenJDK 8
           command: |
             sudo apt-get update && sudo apt-get install -y openjdk-8-jdk
@@ -36,6 +20,24 @@ jobs:
             sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
             echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> $BASH_ENV
             java -version
+      - run:
+          name: Chmod Permissions
+          command: sudo chmod +x gradlew
+      - run:
+          name: Update Package list
+          command: sudo apt-get update
+
+      # - android/create-avd:
+      #     avd-name: customavd
+      #     install: true
+      #     system-image: system-images;android-29;default;x86
+      # - android/start-emulator:
+      #     avd-name: customavd
+      #     no-window: true
+      #     restore-gradle-cache-prefix: v2
+      - android/start-emulator-and-run-tests
+
+ 
       - android/run-tests:
           test-command: ./gradlew test
       - android/run-tests:
@@ -146,18 +148,19 @@ jobs:
 workflows:
   build-test-deploy-trigger-workflow:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - build
-            - test
+      #- build
+      - test
+      # - test:
+      #     requires:
+      #       - build
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - test
 
-      - trigger-children:
-          requires:
-            - deploy
+      # - trigger-children:
+      #     requires:
+      #       - deploy
 
 
 
