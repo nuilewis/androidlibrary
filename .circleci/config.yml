@@ -68,7 +68,9 @@ jobs:
 
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies --stacktrace
+          command: |
+            java -version
+            ./gradlew androidDependencies --stacktrace
 
       - android/save-gradle-cache
 
