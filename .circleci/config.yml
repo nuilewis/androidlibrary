@@ -61,8 +61,10 @@ jobs:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
       - run:
-          name: Echo Java home
-          command: echo $JAVA_HOME  
+          name: Update JAVA_HOME and Echo Java home
+          command: |
+            export JAVA_HOME=/path/to/new/java
+            echo $JAVA_HOME  
 
       - run:
           name: Download Dependencies
