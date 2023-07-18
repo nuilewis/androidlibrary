@@ -49,12 +49,13 @@ jobs:
       # - android/change-java-version:
       #     java-version: 8
       - run:
-          name: Install OpenJDK 17
+          name: Install OpenJDK 8
           command: |
             sudo apt-get update && sudo apt-get install openjdk-8-jdk
-            sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/bin/java
-            sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
             java -version
+          # sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/bin/java
+          # sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+       
 
       - run:
           name: Chmod Permissions
