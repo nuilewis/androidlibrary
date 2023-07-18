@@ -12,8 +12,14 @@ jobs:
 
     steps:
       - checkout
-      - android/change-java-version:
-          java-version: 8
+      - run:
+          name: Install OpenJDK 8
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-8-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+            echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> $BASH_ENV
+            java -version
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
@@ -34,7 +40,7 @@ jobs:
       - android/run-tests:
           test-command: ./gradlew connectedAndroidTest
       - android/save-gradle-cache:
-          cache-prefix: v2
+          cache-prefix: v1
 
   build:
     docker:
@@ -50,11 +56,12 @@ jobs:
             echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> $BASH_ENV
             java -version
 
-
-
       - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
+      - android/restore-gradle-cache:
+          cache-prefix: v1
+
       - run:
           name: Echo Java home
           command: |
@@ -62,9 +69,9 @@ jobs:
 
       - run:
           name: Download Dependencies
-          command: |
-            java -version
-            ./gradlew androidDependencies --stacktrace
+          command: ./gradlew androidDependencies
+      - android/save-gradle-cache:
+          cache-prefix: v1
       - run:
           name: Build Library
           command: ./gradlew assemble
@@ -76,13 +83,23 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install OpenJDK 8
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-8-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+            echo 'export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> $BASH_ENV
+            java -version
+      - run:
           name: Chmod Permissions
           command: sudo chmod +x gradlew
-      - android/restore-gradle-cache
+      - android/restore-gradle-cache:
+          cache-prefix: v1
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
-      - android/save-gradle-cache
+      - android/save-gradle-cache:
+          cache-prefix: v1
       - run:
           name: Publish library
           command: ./gradlew publish
@@ -129,17 +146,17 @@ workflows:
   build-test-deploy-trigger-workflow:
     jobs:
       - build
-      # - test:
-      #     requires:
-      #       - build
-      # - deploy:
-      #     requires:
-      #       - build
-      #       - test
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
 
-      # - trigger-children:
-      #     requires:
-      #       - deploy
+      - trigger-children:
+          requires:
+            - deploy
 
 
 
