@@ -46,7 +46,7 @@ jobs:
       - android/restore-gradle-cache:
           cache-prefix: v3
       - android/change-java-version:
-          java-version: 11
+          java-version: 8
       # - run:
       #     name: Install OpenJDK 8
       #     command: |
@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Update JAVA_HOME and Echo Java home
           command: |
-            export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+            export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/bin/java
             echo $JAVA_HOME  
 
       - run:
