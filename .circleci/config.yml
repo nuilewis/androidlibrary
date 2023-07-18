@@ -41,11 +41,8 @@ jobs:
       - image: cimg/android:2023.06
     steps:
       - checkout
-      - run:
-          name: Clear Gradle cache
-          command: rm -rf ~/.gradle
-      - android/change-java-version:
-          java-version: 8
+      # - android/change-java-version:
+      #     java-version: 8
           # - run:
           #     name: Install OpenJDK 8
           #     command: |
@@ -62,13 +59,12 @@ jobs:
       - run:
           name: Update JAVA_HOME and Echo Java home
           command: |
-            export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/bin/java
             echo $JAVA_HOME  
 
       - run:
           name: Download Dependencies
           command: |
-            java -version
+            java --version
             ./gradlew androidDependencies --stacktrace
       - run:
           name: Build Library
