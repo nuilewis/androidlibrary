@@ -41,19 +41,18 @@ jobs:
   build:
     docker:
       - image: cimg/android:2023.06
-
     steps:
       - checkout
       - android/restore-gradle-cache:
           cache-prefix: v3
-      # - android/change-java-version:
-      #     java-version: 8
-      - run:
-          name: Install OpenJDK 8
-          command: |
-            sudo apt-get update && sudo apt-get install openjdk-8-jdk
-            java -version
-            export PATH="/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH"
+      - android/change-java-version:
+          java-version: 8
+      # - run:
+      #     name: Install OpenJDK 8
+      #     command: |
+      #       sudo apt-get update && sudo apt-get install openjdk-8-jdk
+      #       java -version
+      #       export PATH="/usr/lib/jvm/java-8-openjdk-amd64/bin:$PATH"
           # sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/bin/java
           # sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
        
