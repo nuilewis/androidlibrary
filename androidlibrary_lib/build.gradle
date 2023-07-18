@@ -86,8 +86,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
+        sourceCompatibility 8
+        targetCompatibility 8
     }
 }
 
