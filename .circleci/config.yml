@@ -146,19 +146,17 @@ jobs:
 workflows:
   build-test-deploy-trigger-workflow:
     jobs:
-      #- build
-      - deploy
-      # - test:
-      #     requires:
-      #       - build
-      # - deploy:
-      #     requires:
-      #       - build
-      #       - test
-
-      # - trigger-children:
-      #     requires:
-      #       - deploy
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
+      - trigger-children:
+          requires:
+            - deploy
 
 
 

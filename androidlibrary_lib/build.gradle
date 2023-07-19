@@ -18,8 +18,8 @@ libraryScripts.each {
     apply from: it
 }
 
-
-
+//Get project details using gitVersion
+def projectDetails = versionDetails()
 
 group = groupId
 
@@ -130,54 +130,54 @@ publishing {
         aarDebug(MavenPublication) {}
     }
     repositories {
-        maven{
+        maven {
             name = "GithubPackages"
-            url = "https://maven.pkg.github.com/${System.getenv('GITHUB_ACTOR')}/androidlibrary" //This should be replaced with odk-x/androidlibrary. Should be hardcoded or use gitversion?
+            url = "https://maven.pkg.github.com/${System.getenv('GITHUB_ACTOR')}/androidlibrary"
+            //This should be replaced with odk-x/androidlibrary. Should be hardcoded or use gitversion?
 
             credentials {
                 username = System.getenv('GITHUB_ACTOR')
                 password = System.getenv('GITHUB_TOKEN')
             }
-        }
+       }
         ivy {
             ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
             artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
         }
+        }
     }
-}
 
+    task spawnSnapshotBasicArchives {
+        dependsOn('snapshotVersion')
+        dependsOn('assembleSnapshotBasicDebug')
+        dependsOn('assembleSnapshotBasicRelease')
+        doLast {
+            bundleSnapshotBasicReleaseAar.classifier snapshotRelease
+            bundleSnapshotBasicDebugAar.classifier snapshotDebug
 
-task spawnSnapshotBasicArchives {
-    dependsOn('snapshotVersion')
-    dependsOn('assembleSnapshotBasicDebug')
-    dependsOn('assembleSnapshotBasicRelease')
-    doLast {
-        bundleSnapshotBasicReleaseAar.classifier snapshotRelease
-        bundleSnapshotBasicDebugAar.classifier snapshotDebug
+            publishing.publications.aarRelease.artifact bundleSnapshotBasicReleaseAar
+            publishing.publications.aarDebug.artifact bundleSnapshotBasicDebugAar
 
-        publishing.publications.aarRelease.artifact bundleSnapshotBasicReleaseAar
-        publishing.publications.aarDebug.artifact bundleSnapshotBasicDebugAar
-
-        project.getArtifacts().add("default", bundleSnapshotBasicDebugAar)
+            project.getArtifacts().add("default", bundleSnapshotBasicDebugAar)
+        }
     }
-}
 
-task spawnDemoBasicArchives {
-    dependsOn('snapshotVersion')
-    dependsOn('assembleDemoBasicDebug')
-    dependsOn('assembleDemoBasicRelease')
-    doLast {
-        bundleDemoBasicReleaseAar.classifier demoRelease
-        bundleDemoBasicDebugAar.classifier demoDebug
+    task spawnDemoBasicArchives {
+        dependsOn('snapshotVersion')
+        dependsOn('assembleDemoBasicDebug')
+        dependsOn('assembleDemoBasicRelease')
+        doLast {
+            bundleDemoBasicReleaseAar.classifier demoRelease
+            bundleDemoBasicDebugAar.classifier demoDebug
 
-        publishing.publications.aarRelease.artifact bundleDemoBasicReleaseAar
-        publishing.publications.aarDebug.artifact bundleDemoBasicDebugAar
+            publishing.publications.aarRelease.artifact bundleDemoBasicReleaseAar
+            publishing.publications.aarDebug.artifact bundleDemoBasicDebugAar
 
-        project.getArtifacts().add("default", bundleDemoBasicDebugAar)
+            project.getArtifacts().add("default", bundleDemoBasicDebugAar)
+        }
     }
-}
 
-artifactoryPublish.mustRunAfter('spawnSnapshotBasicArchives')
-artifactoryPublish.mustRunAfter('spawnDemoBasicArchives')
-artifactoryPublish.mustRunAfter('connectedSnapshotBasicDebugAndroidTest')
-artifactoryPublish.mustRunAfter('connectedDemoBasicDebugAndroidTest')
+    artifactoryPublish.mustRunAfter('spawnSnapshotBasicArchives')
+    artifactoryPublish.mustRunAfter('spawnDemoBasicArchives')
+    artifactoryPublish.mustRunAfter('connectedSnapshotBasicDebugAndroidTest')
+    artifactoryPublish.mustRunAfter('connectedDemoBasicDebugAndroidTest')
