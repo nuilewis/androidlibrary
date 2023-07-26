@@ -3,7 +3,6 @@
  *************************************************************************************************/
 plugins {
     id 'com.android.library'
-    id 'com.jfrog.artifactory'
     id 'maven-publish'
     id 'com.palantir.git-version' version '3.0.0'
 }
@@ -129,7 +128,7 @@ publishing {
         aarRelease(MavenPublication) {
             groupId = "com.${System.getenv('GITHUB_ACTOR')}"
             artifactId = 'androidlibrary'
-            version = "1.0.0-$projectDetails.gitHash-SNAPSHOT"
+            version = "1.0.0-SNAPSHOT"
             afterEvaluate{
                 artifact spawnSnapshotBasicArchives
             }
@@ -137,27 +136,11 @@ publishing {
         aarDebug(MavenPublication) {
             groupId = "com.${System.getenv('GITHUB_ACTOR')}"
             artifactId = 'androidlibrary'
-            version = "1.0.0-$projectDetails.gitHash-SNAPSHOT-DEBUG"
+            version = "1.0.0-SNAPSHOT-DEBUG"
             afterEvaluate{
              artifact spawnSnapshotBasicArchives
             }
 
-        }
-    }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = "https://maven.pkg.github.com/${System.getenv('GITHUB_ACTOR')}/androidlibrary"
-            //This should be replaced with odk-x/androidlibrary. Should be hardcoded or use gitversion?
-
-            credentials {
-                username = System.getenv('GITHUB_ACTOR')
-                password = System.getenv('GITHUB_TOKEN')
-            }
-        }
-        ivy {
-            ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
-            artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
         }
     }
 }
@@ -193,7 +176,3 @@ publishing {
     }
 publish.dependsOn(spawnSnapshotBasicArchives)
 
-    artifactoryPublish.mustRunAfter('spawnSnapshotBasicArchives')
-    artifactoryPublish.mustRunAfter('spawnDemoBasicArchives')
-    artifactoryPublish.mustRunAfter('connectedSnapshotBasicDebugAndroidTest')
-    artifactoryPublish.mustRunAfter('connectedDemoBasicDebugAndroidTest')
