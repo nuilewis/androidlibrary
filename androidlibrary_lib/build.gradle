@@ -17,7 +17,7 @@ libraryScripts.each {
     apply from: it
 }
 
-//Get project details using gitVersion
+//Get project details using gitVersion plugin
 def projectDetails = versionDetails()
 
 group = groupId
@@ -124,19 +124,31 @@ dependencies {
 }
 
 publishing {
+    repositories{
+        maven {
+            name = "GithubPackages"
+            url = "https://maven.pkg.github.com/${System.getenv('GITHUB_ACTOR')}/androidlibrary"
+            //This should be replaced with odk-x/androidlibrary. Should be hardcoded or use gitversion?
+
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+    }
     publications {
         aarRelease(MavenPublication) {
-            groupId = "com.${System.getenv('GITHUB_ACTOR')}"
-            artifactId = 'androidlibrary'
-            version = "1.0.0-SNAPSHOT"
+            groupId = "org.opendatakit"
+            artifactId = 'androidlibrary_lib'
+            version = "1.0.0-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnSnapshotBasicArchives
             }
         }
         aarDebug(MavenPublication) {
-            groupId = "com.${System.getenv('GITHUB_ACTOR')}"
-            artifactId = 'androidlibrary'
-            version = "1.0.0-SNAPSHOT-DEBUG"
+            groupId = "org.opendatakit"
+            artifactId = 'androidlibrary_lib'
+            version = "1.0.0-debug-${projectDetails.gitHash}"
             afterEvaluate{
              artifact spawnSnapshotBasicArchives
             }
@@ -158,6 +170,7 @@ publishing {
 
             project.getArtifacts().add("default", bundleSnapshotBasicDebugAar)
         }
+        archiveExtension = 'aar'
     }
 
     task spawnDemoBasicArchives(type: Jar) {
@@ -173,6 +186,7 @@ publishing {
 
             project.getArtifacts().add("default", bundleDemoBasicDebugAar)
         }
+        archiveExtension = 'aar'
     }
 publish.dependsOn(spawnSnapshotBasicArchives)
 
