@@ -118,17 +118,11 @@ jobs:
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
               --data '{"branch":"$CIRCLE_BRANCH"}' \
+            echo $CIRCLE_BRANCH
       - run:
           name: Trigger Services pipeline
           command: |
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/services/pipeline" \
-              --header 'Content-Type: application/json' \
-              -u "${API_TOKEN}:" \
-              --data '{"branch":"$CIRCLE_BRANCH"}' \
-      - run:
-          name: Trigger Suitcase pipeline
-          command: |
-            curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/suitcase/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
               --data '{"branch":"$CIRCLE_BRANCH"}' \
@@ -139,6 +133,14 @@ jobs:
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
               --data '{"branch":"$CIRCLE_BRANCH"}' \
+      - run:
+          name: Trigger Suitcase pipeline
+          command: |
+            curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/suitcase/pipeline" \
+              --header 'Content-Type: application/json' \
+              -u "${API_TOKEN}:" \
+              --data '{"branch":"$CIRCLE_BRANCH"}' \
+
       - run:
           name: Trigger Tables pipeline
           command: |
@@ -152,17 +154,18 @@ jobs:
 workflows:
   build-test-deploy-trigger-workflow:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - deploy:
-          requires:
-            - build
-            - test
-      - trigger-children:
-          requires:
-            - deploy
+      - trigger-children
+      # - build
+      # - test:
+      #     requires:
+      #       - build
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - test
+      # - trigger-children:
+      #     requires:
+      #       - deploy
 
 
 
