@@ -115,10 +115,13 @@ jobs:
           name: Trigger Android Common
           command: |
             echo circleBranch is $CIRCLE_BRANCH
+            echo --data '{"branch":"$CIRCLE_BRANCH"}' \
+            echo --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
+          
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/androidcommon/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
-              --data "{"branch":"$CIRCLE_BRANCH"}" \
+              --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
       # - run:
       #     name: Trigger Services pipeline
       #     command: |
