@@ -112,63 +112,50 @@ jobs:
     resource_class: small
     steps:
       - run:
-          name: Trigger Android Common
-          command: |
-            echo circleBranch is $CIRCLE_BRANCH
-            echo --data '{"branch":"$CIRCLE_BRANCH"}'\
-            echo --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
-          
+          name: Trigger AndroidCommon
+          command: |          
             curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/androidcommon/pipeline" \
               --header 'Content-Type: application/json' \
               -u "${API_TOKEN}:" \
               --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
-      # - run:
-      #     name: Trigger Services pipeline
-      #     command: |
-      #       curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/services/pipeline" \
-      #         --header 'Content-Type: application/json' \
-      #         -u "${API_TOKEN}:" \
-      #         --data '{"branch":"$CIRCLE_BRANCH"}' \
-      # - run:
-      #     name: Trigger Survey pipelines
-      #     command: |
-      #       curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/survey/pipeline" \
-      #         --header 'Content-Type: application/json' \
-      #         -u "${API_TOKEN}:" \
-      #         --data '{"branch":"$CIRCLE_BRANCH"}' \
-      # - run:
-      #     name: Trigger Suitcase pipeline
-      #     command: |
-      #       curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/suitcase/pipeline" \
-      #         --header 'Content-Type: application/json' \
-      #         -u "${API_TOKEN}:" \
-      #         --data '{"branch":"$CIRCLE_BRANCH"}' \
-
-      # - run:
-      #     name: Trigger Tables pipeline
-      #     command: |
-      #       curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/tables/pipeline" \
-      #         --header 'Content-Type: application/json' \
-      #         -u "${API_TOKEN}:" \
-      #         --data '{"branch":"$CIRCLE_BRANCH"}' \
+      - run:
+          name: Trigger Services pipeline
+          command: |
+            curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/services/pipeline" \
+              --header 'Content-Type: application/json' \
+              -u "${API_TOKEN}:" \
+              --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
+      - run:
+          name: Trigger Survey pipelines
+          command: |
+            curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/survey/pipeline" \
+              --header 'Content-Type: application/json' \
+              -u "${API_TOKEN}:" \
+              --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
+      - run:
+          name: Trigger Tables pipeline
+          command: |
+            curl --location --request POST "https://circleci.com/api/v2/project/github/$CIRCLE_USERNAME/tables/pipeline" \
+              --header 'Content-Type: application/json' \
+              -u "${API_TOKEN}:" \
+              --data "{\"branch\":\"$CIRCLE_BRANCH\"}" \
 
 
 
 workflows:
   build-test-deploy-trigger-workflow:
     jobs:
-      - trigger-children
-      # - build
-      # - test:
-      #     requires:
-      #       - build
-      # - deploy:
-      #     requires:
-      #       - build
-      #       - test
-      # - trigger-children:
-      #     requires:
-      #       - deploy
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
+      - trigger-children:
+          requires:
+            - deploy
 
 
 
