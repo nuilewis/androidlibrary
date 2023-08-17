@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 /**************************************************************************************************
  GRADLE CONFIG
  *************************************************************************************************/
@@ -19,6 +21,8 @@ libraryScripts.each {
 
 //Get project details using gitVersion plugin
 def projectDetails = versionDetails()
+def date = new SimpleDateFormat("yyyyMMddHHmmss")
+String formattedDate = date.format(new Date())
 
 group = groupId
 
@@ -140,7 +144,7 @@ publishing {
         aarRelease(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidlibrary_lib'
-            version = "1.0.0-${projectDetails.gitHash}"
+            version = "1.0.0-${formattedDate}-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnSnapshotBasicArchives
             }
@@ -148,7 +152,7 @@ publishing {
         aarDebug(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidlibrary_lib'
-            version = "1.0.0-debug-${projectDetails.gitHash}"
+            version = "1.0.0-debug-${formattedDate}-${projectDetails.gitHash}"
             afterEvaluate{
              artifact spawnSnapshotBasicArchives
             }
